@@ -1,15 +1,23 @@
 package com.sanjaydevtech.recyclerviewsample
 
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
+
 object DataSource {
-    fun getFoodList(): List<Food> {
-        return listOf(
-            Food("Chocolate", 4.7, R.drawable.chocolate),
-            Food("Cake", 4.4, R.drawable.cake),
-            Food("French fries", 4.5, R.drawable.fries),
-            Food("Pizza", 4.1, R.drawable.pizza),
-            Food("Hamburger", 4.6, R.drawable.hamburger),
-            Food("Popcorn", 4.8, R.drawable.popcorn),
-            Food("Candy", 4.5, R.drawable.candy),
-        )
+
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("https://json-placeholder-static.onrender.com/")
+        .addConverterFactory(MoshiConverterFactory.create(
+            Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
+        ))
+        .build()
+
+    private val foodService = retrofit.create(FoodService::class.java)
+    suspend fun getFoodList(): List<Food> {
+        return foodService.getFoods()
     }
 }

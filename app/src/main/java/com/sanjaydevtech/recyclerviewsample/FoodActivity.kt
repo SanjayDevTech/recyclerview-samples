@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
+import coil.load
 
 class FoodActivity : AppCompatActivity() {
 
@@ -24,11 +25,11 @@ class FoodActivity : AppCompatActivity() {
         recipeImage = findViewById(R.id.recipe_img)
 
         val title = intent.getStringExtra("title")
-        val img = intent.getIntExtra("img", R.drawable.pizza)
+        val img = intent.getStringExtra("img")
         val rating = intent.getDoubleExtra("rating", 0.0)
 
         recipeTitle.text = title
         recipeRating.text = rating.toString()
-        recipeImage.setImageResource(img)
+        recipeImage.load(img)
     }
 }

@@ -1,9 +1,12 @@
 package com.sanjaydevtech.recyclerviewsample
 
-import androidx.annotation.DrawableRes
+import com.squareup.moshi.Json
 
 data class Food(
+    val id: String,
     val title: String,
     val rating: Double,
-    @DrawableRes val imgResId: Int,
+
+    @Json(name = "img")
+    val image: String,
 )

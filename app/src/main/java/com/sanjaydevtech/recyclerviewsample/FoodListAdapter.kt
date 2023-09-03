@@ -10,8 +10,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 
-class FoodListAdapter(private val context: Context, var foodList: List<Food>) : RecyclerView.Adapter<FoodListAdapter.FoodViewHolder>() {
+class FoodListAdapter(private val context: Context) : RecyclerView.Adapter<FoodListAdapter.FoodViewHolder>() {
+
+    var foodList: List<Food> = emptyList()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     class FoodViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val recipeTitle: TextView = view.findViewById(R.id.recipe_title_text)
@@ -29,11 +36,11 @@ class FoodListAdapter(private val context: Context, var foodList: List<Food>) : 
         val food = foodList[position]
         holder.recipeTitle.text = food.title
         holder.recipeRating.text = food.rating.toString()
-        holder.recipeImage.setImageResource(food.imgResId)
+        holder.recipeImage.load(food.image)
         holder.container.setOnClickListener {
             val intent = Intent(context, FoodActivity::class.java).apply {
                 putExtra("title", food.title)
-                putExtra("img", food.imgResId)
+                putExtra("img", food.image)
                 putExtra("rating", food.rating)
             }
             context.startActivity(intent)
